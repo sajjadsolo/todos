@@ -1,0 +1,7 @@
+1- enum 
+2- Unions
+3- strtof
+4- strtol
+5- strcmp
+6- atoi
+7- atof
