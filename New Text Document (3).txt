@@ -1,0 +1,165 @@
+//example Code Reusability in c genaric\\
+
+
+#include <stdio.h>
+
+// Define a generic function pointer type
+typedef void (*PrintFunction)(void *);
+
+// Define a generic print function
+void print(void *data, PrintFunction printFunc) {
+    printFunc(data);
+}
+
+// Example print functions for different types
+void printInt(void *data) {
+    int *num = (int *)data;
+    printf("%d\n", *num);
+}
+
+void printFloat(void *data) {
+    float *num = (float *)data;
+    printf("%f\n", *num);
+}
+
+int main() {
+    int num = 42;
+    float floatNum = 3.14;
+
+    // Printing an integer
+    printf("Printing integer: ");
+    print(&num, printInt);
+
+    // Printing a float
+    printf("Printing float: ");
+    print(&floatNum, printFloat);
+
+    return 0;
+}
+
+//example Flexibility in c genaric\\
+
+#include <stdio.h>
+
+// Generic swap function
+void swap(void *a, void *b, size_t size) {
+    char *temp = malloc(size);
+    memcpy(temp, a, size);
+    memcpy(a, b, size);
+    memcpy(b, temp, size);
+    free(temp);
+}
+
+int main() {
+    int num1 = 5;
+    int num2 = 10;
+
+    printf("Before swap: num1 = %d, num2 = %d\n", num1, num2);
+
+    // Swap two integers
+    swap(&num1, &num2, sizeof(int));
+
+    printf("After swap: num1 = %d, num2 = %d\n", num1, num2);
+
+    float float1 = 3.14;
+    float float2 = 2.71;
+
+    printf("Before swap: float1 = %f, float2 = %f\n", float1, float2);
+
+    // Swap two floats
+    swap(&float1, &float2, sizeof(float));
+
+    printf("After swap: float1 = %f, float2 = %f\n", float1, float2);
+
+    return 0;
+}
+
+//example Maintainabilityin c genaric\\
+
+#include <stdio.h>
+
+// Generic print function
+void print(void *data, char *formatSpecifier) {
+    if (formatSpecifier == NULL) {
+        printf("Error: Invalid format specifier.\n");
+        return;
+    }
+
+    if (formatSpecifier[0] == 'd') {
+        int *num = (int *)data;
+        printf(formatSpecifier, *num);
+    } else if (formatSpecifier[0] == 'f') {
+        float *num = (float *)data;
+        printf(formatSpecifier, *num);
+    } else if (formatSpecifier[0] == 's') {
+        char *str = (char *)data;
+        printf(formatSpecifier, str);
+    } else {
+        printf("Error: Unsupported format specifier.\n");
+    }
+}
+
+int main() {
+    int num = 42;
+    float floatNum = 3.14;
+    char str[] = "Hello, World!";
+
+    // Print an integer
+    printf("Printing integer: ");
+    print(&num, "%d\n");
+
+    // Print a float
+    printf("Printing float: ");
+    print(&floatNum, "%.2f\n");
+
+    // Print a string
+    printf("Printing string: ");
+    print(str, "%s\n");
+
+    // Print with an invalid format specifier
+    printf("Printing with invalid format specifier: ");
+    print(&num, "%x\n");
+
+    return 0;
+}
+
+//example Performance in c genaric\\
+
+#include <stdio.h>
+
+// Generic add function
+void add(void *a, void *b, void *result, size_t size) {
+    if (size == sizeof(int)) {
+        int *x = (int *)a;
+        int *y = (int *)b;
+        int *res = (int *)result;
+        *res = *x + *y;
+    } else if (size == sizeof(float)) {
+        float *x = (float *)a;
+        float *y = (float *)b;
+        float *res = (float *)result;
+        *res = *x + *y;
+    } else {
+        printf("Error: Unsupported data type.\n");
+    }
+}
+
+int main() {
+    int int1 = 5;
+    int int2 = 10;
+    int intResult;
+
+    float float1 = 3.14;
+    float float2 = 2.71;
+    float floatResult;
+
+    // Add two integers
+    add(&int1, &int2, &intResult, sizeof(int));
+    printf("Integer addition result: %d\n", intResult);
+
+    // Add two floats
+    add(&float1, &float2, &floatResult, sizeof(float));
+    printf("Float addition result: %f\n", floatResult);
+
+    return 0;
+}
